@@ -57,7 +57,7 @@ const DragAndDropUpload = ({ uploadImage, imageUploading, uploadedImage }) => {
                 className="absolute inset-0 h-full mx-auto object-cover rounded-[24px]"
               />
 
-              {/* Overlay that appears on hover */}
+              {/* Overlay */}
               <div className="h-[240px] absolute inset-0 bg-black/50 bg-opacity-50 flex flex-col gap-[22.67px] justify-center items-center text-white rounded-[24px] opacity-0 hover:opacity-100 transition-opacity duration-300">
                 <img src={downloadIcon} alt="Upload" width={27} height={19} />
                 <p className="text-[#FAFAFA] leading-[150%] text-center max-w-[10rem]">
@@ -87,7 +87,7 @@ const DragAndDropUpload = ({ uploadImage, imageUploading, uploadedImage }) => {
 
       {/* Uploading State */}
       {imageUploading && (
-        <p className="text-[#FAFAFA] md:mt-2 mt-6">Uploading...</p>
+        <p className="text-[#FAFAFA] md:mt-2 mt-6">Uploading, Please wait...</p>
       )}
     </div>
   );

@@ -9,7 +9,7 @@ const Ticket = ({
   specialRequest,
 }) => {
   return (
-    <div className="text-center mt-[32px]">
+    <div id="ticket" className="text-center mt-[32px]">
       <h3 className="md:alatsi text-[24px] md:text-[32px] mb-4 md:font-normal font-bold">
         Your Ticket is Booked!
       </h3>
@@ -47,7 +47,7 @@ const Ticket = ({
                   <h3 className="text-[10px] text-white text-left mb-1">
                     Enter your name
                   </h3>
-                  <p className="font-bold text-[12px] text-white leading-[150%] text-left">
+                  <p className="font-bold text-[12px] text-white leading-[150%] text-left truncate">
                     {fullName}
                   </p>
                 </div>

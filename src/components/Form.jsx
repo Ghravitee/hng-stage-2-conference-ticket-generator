@@ -359,7 +359,7 @@ const Form = () => {
             />
           </div>
           {/* Navigation Buttons */}
-          <div className="flex flex-col-reverse gap-4 md:gap-6 mt-[32px]">
+          <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-6 mt-[32px]">
             <button
               className="text-[#24A0B5] p-2 rounded-[8px] w-full cursor-pointer border border-[#24A0B5] jeju leading-[150%]"
               onClick={() => setStep(1)}
