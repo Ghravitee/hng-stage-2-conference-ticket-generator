@@ -37,16 +37,20 @@ const Form = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(() => {
+    const storedStep = localStorage.getItem("step");
+    return storedStep ? Number(storedStep) : 1; // Initialize with stored value or fallback to 1
+  });
   const [formData, setFormData] = useState(null);
   const [ticketAccess, setTicketAccess] = useState("Regular Access");
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [imageUploading, setImageUploading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState("");
 
-  // Load stored form data on page load
   useEffect(() => {
     const storedData = localStorage.getItem("formData");
+    const storedStep = localStorage.getItem("step");
+
     if (storedData) {
       const data = JSON.parse(storedData);
       setFormData(data);
@@ -57,7 +61,15 @@ const Form = () => {
       setTicketAccess(data.ticketAccess || "Regular Access");
       setTicketQuantity(data.ticketQuantity || 1);
     }
+
+    if (storedStep) {
+      setStep(Number(storedStep)); // Ensure step is a number
+    }
   }, [setValue]);
+
+  useEffect(() => {
+    localStorage.setItem("step", step);
+  }, [step]);
 
   useEffect(() => {
     if (formData) {
@@ -87,7 +99,11 @@ const Form = () => {
       alert("Please select at least 1 ticket.");
       return;
     }
-    setStep(2);
+    setStep((prevStep) => {
+      const newStep = prevStep + 1;
+      localStorage.setItem("step", newStep);
+      return newStep;
+    });
   };
 
   const handleCancel = () => {
@@ -96,6 +112,8 @@ const Form = () => {
     setTicketAccess("Regular Access");
     setTicketQuantity(1);
     setStep(1);
+    localStorage.removeItem("formData");
+    localStorage.removeItem("step");
   };
 
   const onSubmit = async (data) => {
@@ -205,12 +223,20 @@ const Form = () => {
                 <div
                   key={`${ticket.type}-${ticket.access}`}
                   className={`cursor-pointer p-[12px] border rounded-[12px] w-full text-left
-          ${
-            ticketAccess === ticket.access
-              ? "bg-[#12464E] text-white border-[#197686] "
-              : "border-[#197686] text-white hover:bg-[#2C545B] hover:border-[#197686]"
-          }`}
+                  ${
+                    ticketAccess === ticket.access
+                      ? "bg-[#12464E] text-white border-[#197686]"
+                      : "border-[#197686] text-white hover:bg-[#2C545B] hover:border-[#197686]"
+                  }`}
                   onClick={() => setTicketAccess(ticket.access)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      setTicketAccess(ticket.access);
+                    }
+                  }}
+                  tabIndex="0"
+                  role="button"
+                  aria-pressed={ticketAccess === ticket.access}
                 >
                   <h4 className="text-[24px] font-semibold leading-[110%] mb-[12px]">
                     {ticket.type}
@@ -235,12 +261,15 @@ const Form = () => {
           {/* Navigation Buttons */}
           <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-6 mt-[32px]">
             <button
+              type="button"
               className="text-[#24A0B5] p-2 rounded-[8px] w-full cursor-pointer border border-[#24A0B5] jeju leading-[150%]"
               onClick={handleCancel}
             >
               Cancel
             </button>
+
             <button
+              type="button"
               className="bg-[#24A0B5] text-white p-2 rounded-[8px] w-full cursor-pointer jeju leading-[150%]"
               onClick={handleNext}
             >
@@ -267,21 +296,26 @@ const Form = () => {
           <div className="h-1 w-full bg-[#0E464F] my-[32px]"></div>
           {/* Full Name */}
           <div>
-            <label className="text-[#FAFAFA]">Enter your name</label>
+            <label htmlFor="fullName" className="text-[#FAFAFA]">
+              Enter your name
+            </label>
             <input
               type="text"
               {...register("fullName")}
               className="w-full p-2 border border-[#07373F] rounded-[12px] mt-[8px] bg-[#052228] text-[#FAFAFA] 
                focus:outline-0 focus:ring-0 focus:border-[#07373F] focus:bg-[#052228] focus:text-[#FAFAFA]"
+              aria-describedby="fullNameError"
             />
             {errors.fullName && (
-              <p className="text-red-500">{errors.fullName.message}</p>
+              <p className="text-red-500" aria-live="assertive">
+                {errors.fullName.message}
+              </p>
             )}
           </div>
 
           {/* Email */}
           <div className="my-[32px]">
-            <label className="block text-white font-medium">
+            <label htmlFor="email" className="block text-white font-medium">
               Enter your email*
             </label>
 
@@ -291,7 +325,8 @@ const Form = () => {
 
               <img
                 src={iconMail}
-                alt=""
+                alt="icon of a mail"
+                aria-hidden="true"
                 className="absolute left-3 top-1/2 transform -translate-y-1/2"
               />
 
@@ -301,12 +336,15 @@ const Form = () => {
                 {...register("email")}
                 className="w-full p-3 pl-10 border border-[#07373F] rounded-[12px] bg-transparent text-white placeholder:text-white/60 focus:outline-0 focus:ring-0"
                 placeholder="hello@avioflagos.io"
+                aria-describedby="emailError"
               />
             </div>
 
             {/* Error Message */}
             {errors.email && (
-              <p className="text-red-500 mt-1">{errors.email.message}</p>
+              <p className="text-red-500 mt-1" aria-live="assertive">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
