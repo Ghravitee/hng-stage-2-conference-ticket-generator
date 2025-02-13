@@ -9,6 +9,9 @@ export default {
       backgroundImage: {
         ticket: "url('/ticket-background.png')",
       },
+      screens: {
+        xxs: { max: "374px" }, // 👈 Custom breakpoint for screens smaller than 375px
+      },
     },
   },
   plugins: [],

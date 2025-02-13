@@ -81,14 +81,14 @@ const Ticket = ({
 
               <div className="p-2 rounded-md text-white">
                 <h3 className="text-[10px] text-left">Special Request:</h3>
-                <p className="text-gray-300 text-left text-[10px]">
+                <p className="text-gray-300 text-left text-[10px] @max-[375px]:text-red-500 truncate">
                   {specialRequest ||
                     "Nil ? Or the users sad story they write in there gets this whole space, Max of three rows"}
                 </p>
               </div>
             </div>
           </div>
-          <div className="mt-[20%] md:mt-[15%] flex justify-center">
+          <div className="mt-[25%] flex justify-center">
             <img src={barcode} alt="" />
           </div>
         </div>
