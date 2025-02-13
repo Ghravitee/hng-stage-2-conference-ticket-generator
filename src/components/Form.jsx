@@ -302,6 +302,7 @@ const Form = () => {
             <input
               type="text"
               {...register("fullName")}
+              required
               className="w-full p-2 border border-[#07373F] rounded-[12px] mt-[8px] bg-[#052228] text-[#FAFAFA] 
                focus:outline-0 focus:ring-0 focus:border-[#07373F] focus:bg-[#052228] focus:text-[#FAFAFA]"
               aria-describedby="fullNameError"
@@ -332,6 +333,7 @@ const Form = () => {
 
               {/* Input Field */}
               <input
+                required
                 type="email"
                 {...register("email")}
                 className="w-full p-3 pl-10 border border-[#07373F] rounded-[12px] bg-transparent text-white placeholder:text-white/60 focus:outline-0 focus:ring-0"
